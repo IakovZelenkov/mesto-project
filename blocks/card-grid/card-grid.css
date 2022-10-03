@@ -1,0 +1,23 @@
+.card-grid {
+  width: calc(100% - 200px * 2);
+  align-items: center;
+  justify-content: center;
+  padding: 51px 0 0 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 282px);
+  gap: 20px 17px;
+}
+
+@media screen and (max-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 282px);
+  }
+}
+
+@media screen and (max-width: 617px) {
+  .card-grid {
+    padding-top: 36px;
+    grid-template-columns: repeat(1, 282px);
+  }
+}

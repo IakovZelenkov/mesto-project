@@ -1,0 +1,14 @@
+.root {
+  position: relative;
+  background-color: black;
+  font-family: 'Inter', sans-serif;
+  max-width: 1280px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
