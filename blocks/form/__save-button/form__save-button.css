@@ -1,7 +1,8 @@
-.popup__save-button {
+.form__save-button {
   background-color: black;
+  border-radius: 2px;
   color: white;
-  width: 358px;
+  width: 100%;
   height: 50px;
   font-size: 18px;
   line-height: 22px;
@@ -11,13 +12,6 @@
   transition: opacity 0.15s ease-out;
 }
 
-.popup__save-button:hover {
-  opacity: 0.6;
-  cursor: pointer;
-}
-
-@media screen and (max-width: 617px) {
-  .popup__save-button {
-    width: 100%;
-  }
+.form__save-button:hover {
+  opacity: 0.8;
 }

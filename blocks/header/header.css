@@ -1,6 +1,6 @@
 .header {
   margin: 45px auto 0;
-  height: 74px;
+  min-height: 74px;
   width: calc(100% - 200px * 2);
   min-width: 583px;
   box-sizing: border-box;

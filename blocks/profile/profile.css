@@ -11,7 +11,6 @@
     flex-direction: column;
     width: calc(100% - (19px + 19px));
     padding: 42px 19px 0 19px;
-    align-items: center;
     gap: 0;
   }
 }

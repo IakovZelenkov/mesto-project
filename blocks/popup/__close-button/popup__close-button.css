@@ -17,14 +17,13 @@
 
 .popup__close-button:hover {
   opacity: 0.6;
-  cursor: pointer;
 }
 
 @media screen and (max-width: 617px) {
   .popup__close-button {
     width: 20px;
     height: 20px;
-    background-image: url('../../../images/close-button_small.svg');
+    background-size: 20px;
     right: 0;
   }
 }
