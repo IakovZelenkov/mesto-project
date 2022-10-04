@@ -4,7 +4,7 @@
   box-sizing: border-box;
   border: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  margin: 0;
+  margin: 0 0 30px;
   padding: 0 0 13px;
   font-weight: 400;
   font-size: 14px;
@@ -12,6 +12,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.form__input:last-of-type {
+  margin-bottom: 48px;
 }
 
 .form__input:focus {
@@ -41,4 +45,10 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+}
+
+@media screen and (max-width: 617px) {
+  .form__input:last-of-type {
+    margin-bottom: 45px;
+  }
 }
