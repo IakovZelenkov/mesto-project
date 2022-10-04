@@ -8,5 +8,6 @@
   .footer {
     width: calc(100% - 20px * 2);
     min-width: 282px;
+    margin: 48px auto 36px;
   }
 }
