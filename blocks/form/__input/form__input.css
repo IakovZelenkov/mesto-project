@@ -45,7 +45,13 @@
 }
 
 @media screen and (max-width: 617px) {
+  .form__input {
+    margin-bottom: 27px;
+  }
+}
+
+@media screen and (max-width: 617px) {
   .form__input:last-of-type {
-    margin-bottom: 45px;
+    margin-bottom: 42px;
   }
 }

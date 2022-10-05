@@ -19,10 +19,18 @@
         <img src="images/kusto.jpg" alt="Ваше фото" class="profile__avatar" />
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
-          <button class="profile__edit-button btn" type="button"></button>
+          <button
+            class="profile__edit-button btn"
+            aria-label="edit"
+            type="button"
+          ></button>
           <p class="profile__occupation">Исследователь океана</p>
         </div>
-        <button class="profile__add-button btn" type="button"></button>
+        <button
+          class="profile__add-button btn"
+          aria-label="add"
+          type="button"
+        ></button>
       </section>
       <section class="card-grid">
         <article class="card">
@@ -35,6 +43,7 @@
             <h2 class="card__title">Карачаевск</h2>
             <button
               class="card__like-button card__like-button_active btn"
+              aria-label="like"
             ></button>
           </div>
         </article>
@@ -42,28 +51,28 @@
           <img src="images/elbrus.jpg" alt="Гора Эльбрус" class="card__image" />
           <div class="card__info">
             <h2 class="card__title">Гора Эльбрус</h2>
-            <button class="card__like-button btn"></button>
+            <button class="card__like-button btn" aria-label="like"></button>
           </div>
         </article>
         <article class="card">
           <img src="images/dombai.jpg" alt="Домбай" class="card__image" />
           <div class="card__info">
             <h2 class="card__title">Домбай</h2>
-            <button class="card__like-button btn"></button>
+            <button class="card__like-button btn" aria-label="like"></button>
           </div>
         </article>
         <article class="card">
           <img src="images/elbrus.jpg" alt="Гора Эльбрус" class="card__image" />
           <div class="card__info">
             <h2 class="card__title">Гора Эльбрус</h2>
-            <button class="card__like-button btn"></button>
+            <button class="card__like-button btn" aria-label="like"></button>
           </div>
         </article>
         <article class="card">
           <img src="images/dombai.jpg" alt="Домбай" class="card__image" />
           <div class="card__info">
             <h2 class="card__title">Домбай</h2>
-            <button class="card__like-button btn"></button>
+            <button class="card__like-button btn" aria-label="like"></button>
           </div>
         </article>
         <article class="card">
@@ -74,7 +83,7 @@
           />
           <div class="card__info">
             <h2 class="card__title">Карачаево-Черкесия</h2>
-            <button class="card__like-button btn"></button>
+            <button class="card__like-button btn" aria-label="like"></button>
           </div>
         </article>
       </section>
@@ -85,7 +94,11 @@
     <!-- Для отображение модального окна добавьте класс popup_opened -->
     <div class="popup">
       <div class="popup__container">
-        <button type="button" class="popup__close-button btn"></button>
+        <button
+          type="button"
+          class="popup__close-button btn"
+          aria-label="close"
+        ></button>
         <h2 class="popup__title">Редактировать профиль</h2>
         <form class="form" name="profile">
           <input

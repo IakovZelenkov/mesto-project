@@ -9,8 +9,8 @@
 @media screen and (max-width: 1024px) {
   .profile {
     flex-direction: column;
-    width: calc(100% - (19px + 19px));
-    padding: 42px 19px 0 19px;
+    width: calc(100% - 19px * 2);
+    padding: 42px 19px 0;
     gap: 0;
   }
 }

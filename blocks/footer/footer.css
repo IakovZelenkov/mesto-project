@@ -2,6 +2,7 @@
   width: calc(100% - 200px * 2);
   min-width: 583px;
   margin: 66px auto 60px;
+  flex-shrink: 0;
 }
 
 @media screen and (max-width: 617px) {

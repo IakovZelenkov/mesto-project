@@ -1,20 +1,21 @@
 .profile__info {
   display: grid;
-  grid-template-columns: 1fr 24px;
-  grid-gap: 16px 18px;
+  grid-template-columns: 1fr 25px;
+  grid-gap: 8px 18px;
   align-items: center;
-  max-height: 73px;
+  min-height: 73px;
 }
 
 @media screen and (max-width: 1024px) {
   .profile__info {
     text-align: center;
+    margin-left: 26px;
   }
 }
 
 @media screen and (max-width: 617px) {
   .profile__info {
-    grid-template-columns: 1fr 18px;
-    grid-gap: 14px 10px;
+    grid-template-columns: 1fr 19px;
+    grid-gap: 0px 10px;
   }
 }
