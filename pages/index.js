@@ -48,7 +48,7 @@ function addCard(cardName, cardURL) {
     });
   cardElement
     .querySelector(".card__delete-button")
-    .addEventListener("click", function (evt) {
+    .addEventListener("click", function () {
       cardElement.remove();
     });
 
