@@ -32,64 +32,13 @@
           type="button"
         ></button>
       </section>
-      <section class="card-grid">
-        <article class="card">
-          <img
-            src="images/karachaevsk.jpg"
-            alt="Карачаевск"
-            class="card__image"
-          />
-          <div class="card__info">
-            <h2 class="card__title">Карачаевск</h2>
-            <button class="card__like-button btn" aria-label="like"></button>
-          </div>
-        </article>
-        <article class="card">
-          <img src="images/elbrus.jpg" alt="Гора Эльбрус" class="card__image" />
-          <div class="card__info">
-            <h2 class="card__title">Гора Эльбрус</h2>
-            <button class="card__like-button btn" aria-label="like"></button>
-          </div>
-        </article>
-        <article class="card">
-          <img src="images/dombai.jpg" alt="Домбай" class="card__image" />
-          <div class="card__info">
-            <h2 class="card__title">Домбай</h2>
-            <button class="card__like-button btn" aria-label="like"></button>
-          </div>
-        </article>
-        <article class="card">
-          <img src="images/elbrus.jpg" alt="Гора Эльбрус" class="card__image" />
-          <div class="card__info">
-            <h2 class="card__title">Гора Эльбрус</h2>
-            <button class="card__like-button btn" aria-label="like"></button>
-          </div>
-        </article>
-        <article class="card">
-          <img src="images/dombai.jpg" alt="Домбай" class="card__image" />
-          <div class="card__info">
-            <h2 class="card__title">Домбай</h2>
-            <button class="card__like-button btn" aria-label="like"></button>
-          </div>
-        </article>
-        <article class="card">
-          <img
-            src="images/karachaevsk.jpg"
-            alt="Карачаевск"
-            class="card__image"
-          />
-          <div class="card__info">
-            <h2 class="card__title">Карачаево-Черкесия</h2>
-            <button class="card__like-button btn" aria-label="like"></button>
-          </div>
-        </article>
-      </section>
+      <section class="card-container"></section>
     </main>
     <footer class="footer">
       <p class="footer__text">&COPY; 2022 Mesto Russia</p>
     </footer>
     <!-- Для отображение модального окна добавьте класс popup_opened -->
-    <div class="popup">
+    <div class="popup popup_profile">
       <div class="popup__container">
         <button
           type="button"
@@ -104,6 +53,7 @@
             name="name"
             placeholder="Ваше Имя"
             class="form__input"
+            required
           />
           <input
             type="text"
@@ -111,11 +61,66 @@
             name="occupation"
             placeholder="Вид Деятельности"
             class="form__input"
+            required
           />
           <button type="submit" class="form__save-button btn">Сохранить</button>
         </form>
       </div>
     </div>
+    <div class="popup popup_card">
+      <div class="popup__container">
+        <button
+          type="button"
+          class="popup__close-button btn"
+          aria-label="close"
+        ></button>
+        <h2 class="popup__title">Новое место</h2>
+        <form class="form" name="newCard">
+          <input
+            type="text"
+            id="placeName"
+            name="placeName"
+            placeholder="Название"
+            class="form__input"
+            required
+          />
+          <input
+            type="text"
+            id="placeURL"
+            name="placeURL"
+            placeholder="Ссылка на картинку"
+            class="form__input"
+            required
+          />
+          <button type="submit" class="form__save-button btn">Создать</button>
+        </form>
+      </div>
+    </div>
+    <div class="popup-picture">
+      <div class="popup-picture__container">
+        <button
+          type="button"
+          class="popup__close-button btn"
+          aria-label="close"
+        ></button>
+        <img src="/" alt="" class="popup-picture__image" />
+        <h2 class="popup-picture__title"></h2>
+      </div>
+    </div>
+    <template id="card-template">
+      <article class="card">
+        <button
+          type="button"
+          class="card__delete-button btn"
+          aria-label="delete"
+        ></button>
+        <img src="" alt="" class="card__image" />
+        <div class="card__info">
+          <h2 class="card__title"></h2>
+          <button class="card__like-button btn" aria-label="like"></button>
+        </div>
+      </article>
+    </template>
     <script src="pages/index.js"></script>
   </body>
 </html>

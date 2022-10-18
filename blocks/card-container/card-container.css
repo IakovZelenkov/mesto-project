@@ -1,5 +1,4 @@
-.card-grid {
-  /* width: calc(100% - 200px * 2); */
+.card-container {
   align-items: center;
   justify-content: center;
   padding: 51px 0 0 0;
@@ -10,13 +9,13 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .card-grid {
+  .card-container {
     grid-template-columns: repeat(2, 282px);
   }
 }
 
 @media screen and (max-width: 617px) {
-  .card-grid {
+  .card-container {
     padding-top: 36px;
     grid-template-columns: repeat(1, 282px);
   }
