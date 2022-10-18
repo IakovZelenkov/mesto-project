@@ -37,7 +37,7 @@ function addCard(cardName, cardURL) {
   cardElement.querySelector(".card__image").alt = cardName;
   cardElement
     .querySelector(".card__image")
-    .addEventListener("click", function (evt) {
+    .addEventListener("click", function () {
       picturePopupToggle(cardName, cardURL);
     });
   cardElement.querySelector(".card__title").textContent = cardName;
