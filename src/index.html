@@ -4,19 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Место</title>
-    <link rel="stylesheet" href="pages/index.css" />
   </head>
   <body class="root">
     <header class="header">
       <img
-        src="images/logo_white.svg"
+        src="<%=require('./images/logo_white.svg')%>"
         alt="Логотип Mesto"
         class="header__logo"
       />
     </header>
     <main class="content">
       <section class="profile">
-        <img src="images/kusto.jpg" alt="Ваше фото" class="profile__avatar" />
+        <img
+          src="<%=require('./images/kusto.jpg')%>"
+          alt="Ваше фото"
+          class="profile__avatar"
+        />
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
           <button
@@ -46,7 +49,7 @@
           aria-label="close"
         ></button>
         <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="form" name="profile">
+        <form class="form" name="profile" novalidate>
           <input
             type="text"
             id="name"
@@ -55,6 +58,7 @@
             class="form__input"
             required
           />
+          <span class="form__input-error name-input-error"></span>
           <input
             type="text"
             id="occupation"
@@ -63,6 +67,7 @@
             class="form__input"
             required
           />
+          <span class="form__input-error occupation-input-error"></span>
           <button type="submit" class="form__save-button btn">Сохранить</button>
         </form>
       </div>
@@ -103,7 +108,11 @@
           class="popup__close-button btn"
           aria-label="close"
         ></button>
-        <img src="/" alt="" class="popup-picture__image" />
+        <img
+          src="<%=require('./images/kusto.jpg')%>"
+          alt=""
+          class="popup-picture__image"
+        />
         <h2 class="popup-picture__title"></h2>
       </div>
     </div>
@@ -114,13 +123,16 @@
           class="card__delete-button btn"
           aria-label="delete"
         ></button>
-        <img src="" alt="" class="card__image" />
+        <img
+          src="<%=require('./images/kusto.jpg')%>"
+          alt=""
+          class="card__image"
+        />
         <div class="card__info">
           <h2 class="card__title"></h2>
           <button class="card__like-button btn" aria-label="like"></button>
         </div>
       </article>
     </template>
-    <script src="pages/index.js"></script>
   </body>
 </html>
