@@ -27,7 +27,7 @@
             aria-label="edit"
             type="button"
           ></button>
-          <p class="profile__occupation">Исследователь океана</p>
+          <p class="profile__about">Исследователь океана</p>
         </div>
         <button
           class="profile__add-button btn"
@@ -54,21 +54,29 @@
             type="text"
             id="name"
             name="name"
-            placeholder="Ваше Имя"
+            placeholder="Имя"
             class="form__input"
+            minlength="2"
+            maxlength="40"
+            pattern="^[a-zA-Zа-яА-ЯёË -]*$"
+            data-error-message="Разрешено использовать только английские и русские буквы, а также пробел и дефис."
             required
           />
-          <span class="form__input-error name-input-error"></span>
+          <span class="form__error name-error">lorem</span>
           <input
             type="text"
-            id="occupation"
-            name="occupation"
-            placeholder="Вид Деятельности"
+            id="about"
+            name="about"
+            placeholder="О себе"
             class="form__input"
+            minlength="2"
+            maxlength="200"
+            pattern="^[a-zA-Zа-яА-ЯёË -]*$"
+            data-error-message="Разрешено использовать только английские и русские буквы, а также пробел и дефис."
             required
           />
-          <span class="form__input-error occupation-input-error"></span>
-          <button type="submit" class="form__save-button btn">Сохранить</button>
+          <span class="form__error about-error">lorem</span>
+          <button type="submit" class="form__save-button">Сохранить</button>
         </form>
       </div>
     </div>
@@ -87,17 +95,23 @@
             name="placeName"
             placeholder="Название"
             class="form__input"
+            minlength="2"
+            maxlength="30"
+            pattern="^[a-zA-Zа-яА-ЯёË -]*$"
+            data-error-message="Разрешено использовать только английские и русские буквы, а также пробел и дефис."
             required
           />
+          <span class="form__error placeName-error">lorem</span>
           <input
-            type="text"
+            type="url"
             id="placeURL"
             name="placeURL"
             placeholder="Ссылка на картинку"
             class="form__input"
             required
           />
-          <button type="submit" class="form__save-button btn">Создать</button>
+          <span class="form__error placeURL-error">lorem</span>
+          <button type="submit" class="form__save-button">Создать</button>
         </form>
       </div>
     </div>
