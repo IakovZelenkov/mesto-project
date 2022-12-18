@@ -4,7 +4,7 @@
   box-sizing: border-box;
   border: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  margin: 0 0 28px;
+  margin: 0 0 5px;
   padding: 0 0 13px;
   font-weight: 400;
   font-size: 14px;
@@ -12,7 +12,7 @@
 }
 
 .form__input:last-of-type {
-  margin-bottom: 46px;
+  /* margin-bottom: 46px; */
 }
 
 .form__input:focus {
@@ -44,7 +44,7 @@
   line-height: 17px;
 }
 
-@media screen and (max-width: 617px) {
+/* @media screen and (max-width: 617px) {
   .form__input {
     margin-bottom: 27px;
   }
@@ -54,4 +54,4 @@
   .form__input:last-of-type {
     margin-bottom: 42px;
   }
-}
+} */

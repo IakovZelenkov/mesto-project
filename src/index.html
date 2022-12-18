@@ -4,19 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Место</title>
-    <link rel="stylesheet" href="pages/index.css" />
   </head>
   <body class="root">
     <header class="header">
       <img
-        src="images/logo_white.svg"
+        src="<%=require('./images/logo_white.svg')%>"
         alt="Логотип Mesto"
         class="header__logo"
       />
     </header>
     <main class="content">
       <section class="profile">
-        <img src="images/kusto.jpg" alt="Ваше фото" class="profile__avatar" />
+        <img
+          src="<%=require('./images/kusto.jpg')%>"
+          alt="Ваше фото"
+          class="profile__avatar"
+        />
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
           <button
@@ -24,7 +27,7 @@
             aria-label="edit"
             type="button"
           ></button>
-          <p class="profile__occupation">Исследователь океана</p>
+          <p class="profile__about">Исследователь океана</p>
         </div>
         <button
           class="profile__add-button btn"
@@ -46,24 +49,34 @@
           aria-label="close"
         ></button>
         <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="form" name="profile">
+        <form class="form" name="profile" novalidate>
           <input
             type="text"
             id="name"
             name="name"
-            placeholder="Ваше Имя"
+            placeholder="Имя"
             class="form__input"
+            minlength="2"
+            maxlength="40"
+            pattern="^[a-zA-Zа-яА-ЯёË -]*$"
+            data-error-message="Разрешено использовать только английские и русские буквы, а также пробел и дефис."
             required
           />
+          <span class="form__error name-error">lorem</span>
           <input
             type="text"
-            id="occupation"
-            name="occupation"
-            placeholder="Вид Деятельности"
+            id="about"
+            name="about"
+            placeholder="О себе"
             class="form__input"
+            minlength="2"
+            maxlength="200"
+            pattern="^[a-zA-Zа-яА-ЯёË -]*$"
+            data-error-message="Разрешено использовать только английские и русские буквы, а также пробел и дефис."
             required
           />
-          <button type="submit" class="form__save-button btn">Сохранить</button>
+          <span class="form__error about-error">lorem</span>
+          <button type="submit" class="form__save-button">Сохранить</button>
         </form>
       </div>
     </div>
@@ -82,17 +95,23 @@
             name="placeName"
             placeholder="Название"
             class="form__input"
+            minlength="2"
+            maxlength="30"
+            pattern="^[a-zA-Zа-яА-ЯёË -]*$"
+            data-error-message="Разрешено использовать только английские и русские буквы, а также пробел и дефис."
             required
           />
+          <span class="form__error placeName-error">lorem</span>
           <input
-            type="text"
+            type="url"
             id="placeURL"
             name="placeURL"
             placeholder="Ссылка на картинку"
             class="form__input"
             required
           />
-          <button type="submit" class="form__save-button btn">Создать</button>
+          <span class="form__error placeURL-error">lorem</span>
+          <button type="submit" class="form__save-button">Создать</button>
         </form>
       </div>
     </div>
@@ -103,7 +122,11 @@
           class="popup__close-button btn"
           aria-label="close"
         ></button>
-        <img src="/" alt="" class="popup-picture__image" />
+        <img
+          src="<%=require('./images/kusto.jpg')%>"
+          alt=""
+          class="popup-picture__image"
+        />
         <h2 class="popup-picture__title"></h2>
       </div>
     </div>
@@ -114,13 +137,16 @@
           class="card__delete-button btn"
           aria-label="delete"
         ></button>
-        <img src="" alt="" class="card__image" />
+        <img
+          src="<%=require('./images/kusto.jpg')%>"
+          alt=""
+          class="card__image"
+        />
         <div class="card__info">
           <h2 class="card__title"></h2>
           <button class="card__like-button btn" aria-label="like"></button>
         </div>
       </article>
     </template>
-    <script src="pages/index.js"></script>
   </body>
 </html>
