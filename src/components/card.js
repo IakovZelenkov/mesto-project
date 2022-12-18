@@ -41,6 +41,4 @@ function renderInitialCards(cardsContainer, cardTemplate) {
   });
 }
 
-export { createCard, renderInitialCards, addCard };
-
-//TODO work on card modals
+export { addCard, createCard, renderInitialCards };

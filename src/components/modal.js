@@ -1,12 +1,4 @@
-import { setFormValue } from "./validate.js";
-import {
-  page,
-  profilePopup,
-  newCardPopup,
-  picturePopup,
-  picturePopupImage,
-  picturePopupTitle,
-} from "./index.js";
+import { page, picturePopupImage, picturePopupTitle } from "./index.js";
 
 function openPopup(popup) {
   popup.classList.add("popup_opened");

@@ -1,38 +1,80 @@
-import {
-  cardsContainer,
-  cardTemplate,
-  profilePopup,
-  newCardPopup,
-  placeNameInput,
-  placeURLInput,
-  profileName,
-  profileJob,
-  nameInput,
-  jobInput,
-} from "./index.js";
-import { closePopup } from "./modal.js";
-import { addCard, createCard } from "./card.js";
+function showInputError(formElement, inputElement, errorMessage, selectors) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
-function setFormValue() {
-  nameInput.setAttribute("value", profileName.textContent);
-  jobInput.setAttribute("value", profileJob.textContent);
+  inputElement.classList.add(selectors.inputErrorClass);
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add(selectors.errorClass);
 }
 
-function profileFormSubmitHandler(evt) {
-  evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileJob.textContent = jobInput.value;
-  closePopup(profilePopup);
+function hideInputError(formElement, inputElement, selectors) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
+  inputElement.classList.remove(selectors.inputErrorClass);
+  errorElement.classList.remove(selectors.errorClass);
+  errorElement.textContent = "";
 }
 
-function newCardFormSubmitHandler(evt) {
-  evt.preventDefault();
-  addCard(
-    createCard(placeNameInput.value, placeURLInput.value, cardTemplate),
-    cardsContainer
+function checkInputValidity(formElement, inputElement, selectors) {
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  } else {
+    inputElement.setCustomValidity("");
+  }
+
+  if (!inputElement.validity.valid) {
+    showInputError(
+      formElement,
+      inputElement,
+      inputElement.validationMessage,
+      selectors
+    );
+  } else {
+    hideInputError(formElement, inputElement, selectors);
+  }
+}
+
+function hasInvalidInput(inputList) {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+}
+
+function toggleButtonState(inputList, buttonElement, selectors) {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add(selectors.inactiveButtonClass);
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove(selectors.inactiveButtonClass);
+    buttonElement.disabled = false;
+  }
+}
+
+function setEventListeners(formElement, selectors) {
+  const inputList = Array.from(
+    formElement.querySelectorAll(selectors.inputSelector)
   );
-  closePopup(newCardPopup);
-  evt.target.reset();
+
+  const buttonElement = formElement.querySelector(
+    selectors.submitButtonSelector
+  );
+
+  toggleButtonState(inputList, buttonElement, selectors);
+
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener("input", () => {
+      checkInputValidity(formElement, inputElement, selectors);
+      toggleButtonState(inputList, buttonElement, selectors);
+    });
+  });
 }
 
-export { setFormValue, profileFormSubmitHandler, newCardFormSubmitHandler };
+function enableValidation(selectors) {
+  const formList = Array.from(
+    document.querySelectorAll(selectors.formSelector)
+  );
+  formList.forEach((formElement) => {
+    setEventListeners(formElement, selectors);
+  });
+}
+
+export { enableValidation, toggleButtonState };
