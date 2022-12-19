@@ -39,6 +39,11 @@ function hasInvalidInput(inputList) {
   });
 }
 
+function disableButton(buttonElement, selectors) {
+  buttonElement.classList.add(selectors.inactiveButtonClass);
+  buttonElement.disabled = true;
+}
+
 function toggleButtonState(inputList, buttonElement, selectors) {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(selectors.inactiveButtonClass);
@@ -77,4 +82,4 @@ function enableValidation(selectors) {
   });
 }
 
-export { enableValidation, toggleButtonState };
+export { enableValidation, toggleButtonState, disableButton };
