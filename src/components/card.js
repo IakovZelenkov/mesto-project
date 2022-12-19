@@ -1,6 +1,6 @@
 import { initialCards } from "./data.js";
 import { createPicturePopup, openPopup } from "./modal.js";
-import { picturePopup } from "./index.js";
+import { picturePopup } from "./utils.js";
 
 function addCard(cardElement, cardsContainer) {
   cardsContainer.prepend(cardElement);
@@ -18,10 +18,10 @@ function toggleLikeButton(evt) {
 
 function createCard(name, link, cardTemplate) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
-
-  cardElement.querySelector(".card__image").src = link;
-  cardElement.querySelector(".card__image").alt = name;
-  cardElement.querySelector(".card__image").addEventListener("click", () => {
+  const cardElementImage = cardElement.querySelector(".card__image");
+  cardElementImage.src = link;
+  cardElementImage.alt = name;
+  cardElementImage.addEventListener("click", () => {
     createPicturePopup(name, link);
     openPopup(picturePopup);
   });

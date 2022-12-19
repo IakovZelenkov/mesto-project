@@ -1,17 +1,18 @@
-import { page, picturePopupImage, picturePopupTitle } from "./index.js";
+import {
+  page,
+  popupList,
+  picturePopupImage,
+  picturePopupTitle,
+} from "./utils.js";
 
 function openPopup(popup) {
   popup.classList.add("popup_opened");
   page.addEventListener("keydown", keyHandler);
-  popup.addEventListener("click", function (evt) {
-    if (evt.target.classList.contains("popup_opened")) {
-      closePopup(popup);
-    }
-  });
 }
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
+  page.removeEventListener("keydown", keyHandler);
 }
 
 function createPicturePopup(name, link) {
@@ -24,8 +25,15 @@ function keyHandler(evt) {
   if (evt.key === "Escape") {
     const openedPopup = page.querySelector(".popup_opened");
     closePopup(openedPopup);
-    page.removeEventListener("keydown", keyHandler);
   }
 }
+
+popupList.forEach((popup) => {
+  popup.addEventListener("click", function (evt) {
+    if (evt.target.classList.contains("popup_opened")) {
+      closePopup(popup);
+    }
+  });
+});
 
 export { openPopup, createPicturePopup, closePopup };
