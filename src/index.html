@@ -15,11 +15,14 @@
     </header>
     <main class="content">
       <section class="profile">
-        <img
-          src="<%=require('./images/kusto.jpg')%>"
-          alt="Ваше фото"
-          class="profile__avatar"
-        />
+        <div class="profile__avatar-container">
+          <img
+            src="<%=require('./images/kusto.jpg')%>"
+            alt="Ваше фото"
+            class="profile__avatar"
+          />
+        </div>
+
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
           <button
@@ -71,7 +74,7 @@
             class="form__input"
             minlength="2"
             maxlength="200"
-            pattern="^[a-zA-Zа-яА-ЯёË -]*$"
+            pattern="^[a-zA-Zа-яА-ЯёË, -]*$"
             data-error-message="Разрешено использовать только английские и русские буквы, а также пробел и дефис."
             required
           />
@@ -130,6 +133,28 @@
         <h2 class="popup-picture__title"></h2>
       </div>
     </div>
+    <div class="popup popup_avatar">
+      <div class="popup__container">
+        <button
+          type="button"
+          class="popup__close-button btn"
+          aria-label="close"
+        ></button>
+        <h2 class="popup__title">Обновить аватар</h2>
+        <form class="form" name="newCard">
+          <input
+            type="url"
+            id="avatarURL"
+            name="avatarURL"
+            placeholder="Ссылка на ваш аватар"
+            class="form__input"
+            required
+          />
+          <span class="form__error avatarURL-error">lorem</span>
+          <button type="submit" class="form__save-button">Сохранить</button>
+        </form>
+      </div>
+    </div>
     <template id="card-template">
       <article class="card">
         <button
@@ -144,7 +169,10 @@
         />
         <div class="card__info">
           <h2 class="card__title"></h2>
-          <button class="card__like-button btn" aria-label="like"></button>
+          <div class="card__like-button-container">
+            <button class="card__like-button btn" aria-label="like"></button>
+            <p class="card__like-button-count">0</p>
+          </div>
         </div>
       </article>
     </template>
