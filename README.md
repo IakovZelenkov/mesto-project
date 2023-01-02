@@ -14,6 +14,5 @@
 8. Form validation using js
 9. Webpack
 10. API
-=======
 
 [Github Pages Link](https://iakovzelenkov.github.io/mesto-project/)
