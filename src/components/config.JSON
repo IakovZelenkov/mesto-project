@@ -1,0 +1,8 @@
+{
+  "baseUrl": "https://nomoreparties.co/v1/plus-cohort-18",
+  "headers": {
+    "authorization": "df69811e-988c-4da6-ab8f-d6576e714ab3",
+    "Content-Type": "application/json"
+  },
+  "userId": ""
+}
