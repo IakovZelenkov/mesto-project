@@ -16,7 +16,7 @@ export const newCardPopup = document.querySelector(".popup_card");
 export const cardFormElement = newCardPopup.querySelector(".form");
 export const placeNameInput = newCardPopup.querySelector("#placeName");
 export const placeURLInput = newCardPopup.querySelector("#placeURL");
-export const newCardSumbitBtn =
+export const newCardSubmitBtn =
   newCardPopup.querySelector(".form__save-button");
 // Profile Popup
 export const profile = document.querySelector(".profile");
@@ -26,8 +26,15 @@ export const profileName = profile.querySelector(".profile__name");
 export const profileAbout = profile.querySelector(".profile__about");
 export const aboutInput = profilePopup.querySelector("#about");
 export const nameInput = profilePopup.querySelector("#name");
+export const profileAvatar = profile.querySelector(".profile__avatar");
+export const newAvatarPopup = document.querySelector(".popup_avatar");
+export const newAvatarFormElement = newAvatarPopup.querySelector(".form");
+export const newAvatarURLInput = newAvatarPopup.querySelector("#avatarURL");
+export const profileSubmitBtn =
+  profilePopup.querySelector(".form__save-button");
+export const avatarSubmitBtn =
+  newAvatarPopup.querySelector(".form__save-button");
 // Btns
 export const profileEditBtn = profile.querySelector(".profile__edit-button");
 export const profileAddBtn = profile.querySelector(".profile__add-button");
 export const closeButtons = document.querySelectorAll(".popup__close-button");
-export const formSubmitBtn = document.querySelector(".form__save-button");

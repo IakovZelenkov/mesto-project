@@ -2,11 +2,12 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  margin: 0;
+  object-fit: cover;
+  position: relative;
+  transition: opacity 0.25s linear;
 }
 
-@media screen and (max-width: 1024px) {
-  .profile__avatar {
-    margin-bottom: 20px;
-  }
+.profile__avatar:hover {
+  opacity: 0.2;
+  cursor: pointer;
 }
