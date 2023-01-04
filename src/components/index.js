@@ -22,22 +22,60 @@ import {
   newAvatarPopup,
   newAvatarFormElement,
   newAvatarURLInput,
-} from "./utils.js";
-import { renderInitialCards, addCard, createCard } from "./card.js";
+} from "./variables.js";
+import { buttonLoading } from "./utils";
+import { createCard, updateLike, removeCard } from "./card.js";
 import { openPopup, closePopup } from "./modal.js";
-import {
-  enableValidation,
-  toggleButtonState,
-  disableButton,
-} from "./validate.js";
+import { enableValidation, disableButton } from "./validate.js";
 import { selectors } from "./data.js";
 import * as api from "./api.js";
+
+// Cards
+function cardLikeHandler(cardLikeBtn, likeCount, id) {
+  let method = "";
+  cardLikeBtn.classList.contains("card__like-button_active")
+    ? (method = "DELETE")
+    : (method = "PUT");
+
+  api
+    .toggleLike(id, method)
+    .then((data) => {
+      updateLike(cardLikeBtn, likeCount, data.likes.length);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function cardDeleteHandler(card, id) {
+  api
+    .deleteCard(id)
+    .then(() => {
+      removeCard(card);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function addCard(cardElement, cardsContainer) {
+  cardsContainer.prepend(cardElement);
+}
+
+function renderInitialCards(cardsObject, cardsContainer, cardTemplate) {
+  cardsObject.reverse().forEach((item) => {
+    addCard(
+      createCard(item, cardTemplate, cardLikeHandler, cardDeleteHandler),
+      cardsContainer
+    );
+  });
+}
 
 // Forms
 function setProfileValue() {
   nameInput.setAttribute("value", profileName.textContent);
   aboutInput.setAttribute("value", profileAbout.textContent);
-  toggleButtonState([nameInput, aboutInput], profileSubmitBtn, selectors);
+  disableButton(profileSubmitBtn, selectors);
 }
 
 function changeAvatar(avatarURL) {
@@ -46,7 +84,7 @@ function changeAvatar(avatarURL) {
 
 function profileFormSubmitHandler(evt) {
   evt.preventDefault();
-  profileSubmitBtn.textContent = "Сохранение...";
+  buttonLoading(profileSubmitBtn);
   api
     .updateUserData(nameInput.value, aboutInput.value)
     .then((userData) => {
@@ -54,31 +92,38 @@ function profileFormSubmitHandler(evt) {
       profileAbout.textContent = userData.about;
       closePopup(profilePopup);
     })
-    .finally(() => (profileSubmitBtn.textContent = "Сохранить"))
     .catch((error) => {
-      console.log(error);
+      console.error(error);
+    })
+    .finally(() => {
+      buttonLoading(profileSubmitBtn, "Сохранить");
     });
 }
 
 function newCardFormSubmitHandler(evt) {
   evt.preventDefault();
-  newCardSubmitBtn.textContent = "Сохранение...";
+  buttonLoading(newCardSubmitBtn);
   api
     .postNewCard(placeNameInput.value, placeURLInput.value)
     .then((cardData) => {
-      addCard(createCard(cardData, cardTemplate), cardsContainer);
+      addCard(
+        createCard(cardData, cardTemplate, cardLikeHandler, cardDeleteHandler),
+        cardsContainer
+      );
       closePopup(newCardPopup);
       evt.target.reset();
     })
-    .finally(() => (newCardSubmitBtn.textContent = "Создать"))
     .catch((error) => {
-      console.log(error);
+      console.error(error);
+    })
+    .finally(() => {
+      buttonLoading(newCardSubmitBtn, "Создать");
     });
 }
 
 function newAvatarFormSubmitHandler(evt) {
   evt.preventDefault();
-  avatarSubmitBtn.textContent = "Сохранение...";
+  buttonLoading(avatarSubmitBtn);
   api
     .updateUserAvatar(newAvatarURLInput.value)
     .then((avatarData) => {
@@ -86,9 +131,12 @@ function newAvatarFormSubmitHandler(evt) {
       closePopup(newAvatarPopup);
       evt.target.reset();
     })
-    .finally(() => (avatarSubmitBtn.textContent = "Сохранить"))
+
     .catch((error) => {
-      console.log(error);
+      console.error(error);
+    })
+    .finally(() => {
+      buttonLoading(avatarSubmitBtn, "Сохранить");
     });
 }
 
@@ -96,11 +144,7 @@ function newAvatarFormSubmitHandler(evt) {
 
 profileAddBtn.addEventListener("click", () => {
   openPopup(newCardPopup);
-  toggleButtonState(
-    [placeNameInput, placeURLInput],
-    newCardSubmitBtn,
-    selectors
-  );
+  disableButton(profileSubmitBtn, selectors);
 });
 
 closeButtons.forEach((button) => {

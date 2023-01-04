@@ -3,7 +3,7 @@ import {
   popupList,
   picturePopupImage,
   picturePopupTitle,
-} from "./utils.js";
+} from "./variables.js";
 
 function openPopup(popup) {
   popup.classList.add("popup_opened");
