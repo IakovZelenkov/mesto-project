@@ -1,16 +1,14 @@
 import config from "./config.json";
 export const localConfig = config;
 
+function checkResponse(res) {
+  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+}
+
 export function getUser() {
   return fetch(`${localConfig.baseUrl}/users/me`, {
     headers: localConfig.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  });
+  }).then((res) => checkResponse(res));
 }
 
 export function setUserId(userId) {
@@ -20,13 +18,7 @@ export function setUserId(userId) {
 export function getInitialCards() {
   return fetch(`${localConfig.baseUrl}/cards`, {
     headers: localConfig.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  });
+  }).then((res) => checkResponse(res));
 }
 
 export function updateUserData(name, about) {
@@ -37,13 +29,7 @@ export function updateUserData(name, about) {
       name: name,
       about: about,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  });
+  }).then((res) => checkResponse(res));
 }
 
 export function updateUserAvatar(avatar) {
@@ -53,13 +39,7 @@ export function updateUserAvatar(avatar) {
     body: JSON.stringify({
       avatar: avatar,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  });
+  }).then((res) => checkResponse(res));
 }
 
 export function postNewCard(name, link) {
@@ -70,50 +50,19 @@ export function postNewCard(name, link) {
       name: name,
       link: link,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  });
+  }).then((res) => checkResponse(res));
 }
 
 export function deleteCard(id) {
   return fetch(`${localConfig.baseUrl}/cards/${id}`, {
     method: "DELETE",
     headers: localConfig.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  });
+  }).then((res) => checkResponse(res));
 }
 
-export function setLike(id) {
+export function toggleLike(id, method) {
   return fetch(`${localConfig.baseUrl}/cards/likes/${id}`, {
-    method: "PUT",
+    method: method,
     headers: localConfig.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  });
-}
-
-export function unsetLike(id) {
-  return fetch(`${localConfig.baseUrl}/cards/likes/${id}`, {
-    method: "DELETE",
-    headers: localConfig.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Ошибка: ${res.status}`);
-    }
-  });
+  }).then((res) => checkResponse(res));
 }
