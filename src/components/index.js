@@ -30,6 +30,8 @@ import { enableValidation, disableButton } from "./validate.js";
 import { selectors } from "./data.js";
 import * as api from "./api.js";
 
+import PopupWithForm from "./PopupWithForm.js";
+
 // Cards
 function cardLikeHandler(cardLikeBtn, likeCount, id) {
   let method = "";
@@ -100,11 +102,10 @@ function profileFormSubmitHandler(evt) {
     });
 }
 
-function newCardFormSubmitHandler(evt) {
-  evt.preventDefault();
+function newCardFormSubmitHandler(data) {
   buttonLoading(newCardSubmitBtn);
   api
-    .postNewCard(placeNameInput.value, placeURLInput.value)
+    .postNewCard(data)
     .then((cardData) => {
       addCard(
         createCard(cardData, cardTemplate, cardLikeHandler, cardDeleteHandler),
@@ -142,33 +143,39 @@ function newAvatarFormSubmitHandler(evt) {
 
 // Adding event listeners
 
+// profileAddBtn.addEventListener("click", () => {
+//   openPopup(newCardPopup);
+//   disableButton(profileSubmitBtn, selectors);
+// });
+
+const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
+addCardPopup.setEventListeners();
 profileAddBtn.addEventListener("click", () => {
-  openPopup(newCardPopup);
-  disableButton(profileSubmitBtn, selectors);
+  addCardPopup.open();
 });
 
-closeButtons.forEach((button) => {
-  const popup = button.closest(".popup");
-  button.addEventListener("click", () => closePopup(popup));
-});
+// closeButtons.forEach((button) => {
+//   const popup = button.closest(".popup");
+//   button.addEventListener("click", () => closePopup(popup));
+// });
 
-profileEditBtn.addEventListener("click", () => {
-  setProfileValue();
-  openPopup(profilePopup);
-});
+// profileEditBtn.addEventListener("click", () => {
+//   setProfileValue();
+//   openPopup(profilePopup);
+// });
 
-profileAvatar.addEventListener("click", () => {
-  openPopup(newAvatarPopup);
-});
+// profileAvatar.addEventListener("click", () => {
+//   openPopup(newAvatarPopup);
+// });
 
-profileFormElement.addEventListener("submit", profileFormSubmitHandler);
+// profileFormElement.addEventListener("submit", profileFormSubmitHandler);
 
-cardFormElement.addEventListener("submit", (evt) => {
-  newCardFormSubmitHandler(evt);
-  disableButton(newCardSubmitBtn, selectors);
-});
+// cardFormElement.addEventListener("submit", (evt) => {
+//   newCardFormSubmitHandler(evt);
+//   disableButton(newCardSubmitBtn, selectors);
+// });
 
-newAvatarFormElement.addEventListener("submit", newAvatarFormSubmitHandler);
+// newAvatarFormElement.addEventListener("submit", newAvatarFormSubmitHandler);
 
 // Enabling validation
 enableValidation(selectors);
