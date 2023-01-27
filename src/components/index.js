@@ -148,21 +148,37 @@ function newAvatarFormSubmitHandler(evt) {
 //   disableButton(profileSubmitBtn, selectors);
 // });
 
+// New Card Popup
 const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
 addCardPopup.setEventListeners();
 profileAddBtn.addEventListener("click", () => {
   addCardPopup.open();
 });
 
-// closeButtons.forEach((button) => {
-//   const popup = button.closest(".popup");
-//   button.addEventListener("click", () => closePopup(popup));
-// });
+// Profile Edit Popup
+const editProfilePopup = new PopupWithForm(
+  profilePopup,
+  profileFormSubmitHandler
+);
+editProfilePopup.setEventListeners();
+profileEditBtn.addEventListener("click", () => {
+  editProfilePopup.open();
+});
 
 // profileEditBtn.addEventListener("click", () => {
 //   setProfileValue();
 //   openPopup(profilePopup);
 // });
+
+// Popup Avatar change
+const avatarPopup = new PopupWithForm(
+  newAvatarPopup,
+  newAvatarFormSubmitHandler
+);
+avatarPopup.setEventListeners();
+profileAvatar.addEventListener("click", () => {
+  avatarPopup.open();
+});
 
 // profileAvatar.addEventListener("click", () => {
 //   openPopup(newAvatarPopup);
