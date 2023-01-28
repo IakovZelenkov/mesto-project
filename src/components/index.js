@@ -30,7 +30,6 @@ import { enableValidation, disableButton } from "./validate.js";
 import { selectors } from "./data.js";
 // import * as api from "./api.js";
 
-
 import Api from "./ApiOOP.js";
 import PopupWithForm from "./PopupWithForm.js";
 
@@ -107,12 +106,9 @@ function profileFormSubmitHandler(data) {
     profileName.textContent = userData.name;
     profileAbout.textContent = userData.about;
     editProfilePopup.close(profilePopup);
-  })
-  
-  
+  });
+
   // Add button loading and error catch
-  
-  
 }
 
 function newCardFormSubmitHandler(data) {
@@ -133,18 +129,17 @@ function newCardFormSubmitHandler(data) {
   //   .finally(() => {
   //     buttonLoading(newCardSubmitBtn, "Создать");
   //   });
-  console.log(data)
+  console.log(data);
 }
 
 function newAvatarFormSubmitHandler(data) {
   // buttonLoading(avatarSubmitBtn);
   console.log(data);
-   api
-    .updateUserAvatar(data.avatarURL).then((avatarData) => {
-      changeAvatar(avatarData.avatar);
-      avatarPopup.close(newAvatarPopup);
-    })
-  
+  api.updateUserAvatar(data.avatarURL).then((avatarData) => {
+    changeAvatar(avatarData.avatar);
+    avatarPopup.close(newAvatarPopup);
+  });
+
   // api
   //   .updateUserAvatar(data.avatarURL)
   //   .then((avatarData) => {
@@ -154,9 +149,9 @@ function newAvatarFormSubmitHandler(data) {
   //   .catch((error) => {
   //     console.error(error);
   //   })
-    // .finally(() => {
-    //   buttonLoading(avatarSubmitBtn, "Сохранить");
-    // });
+  // .finally(() => {
+  //   buttonLoading(avatarSubmitBtn, "Сохранить");
+  // });
 }
 
 // Adding event listeners
@@ -214,16 +209,16 @@ profileAvatar.addEventListener("click", () => {
 // Enabling validation
 enableValidation(selectors);
 const api = new Api({
-   baseUrl: "https://nomoreparties.co/v1/plus-cohort-18",
-    headers: {
-      authorization: "df69811e-988c-4da6-ab8f-d6576e714ab3",
-      "Content-Type": "application/json"
-    },
-})
+  baseUrl: "https://nomoreparties.co/v1/plus-cohort-18",
+  headers: {
+    authorization: "df69811e-988c-4da6-ab8f-d6576e714ab3",
+    "Content-Type": "application/json",
+  },
+});
 
 // Promise.all([api.getUser(), api.getInitialCards()])
 //   .then(([user, cards]) => {
-//     // api.setUserId(user._id);
+//     api.setUserId(user._id);
 //     profileName.textContent = user.name;
 //     profileAbout.textContent = user.about;
 //     changeAvatar(user.avatar);
@@ -234,10 +229,6 @@ const api = new Api({
 //     console.error(error);
 //   });
 
-
-
-
-
 //TEST
 
 // api.getInitialCards();
@@ -246,6 +237,5 @@ api.getUser().then((user) => {
   profileAbout.textContent = user.about;
   changeAvatar(user.avatar);
 });
-
 
 // TODO 1. CardJS 2. FormValidatorJS 3.SectionJS 4. UserInfo
