@@ -24,7 +24,7 @@ import {
   newAvatarURLInput,
 } from "./variables.js";
 import { buttonLoading } from "./utils";
-import { createCard, updateLike, removeCard } from "./card.js";
+// import { createCard, updateLike, removeCard } from "./card.js";
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation, disableButton } from "./validate.js";
 import { selectors } from "./data.js";
@@ -33,7 +33,9 @@ import { selectors } from "./data.js";
 // OOP
 import Api from "./ApiOOP.js";
 import PopupWithForm from "./PopupWithForm.js";
-import UserInfo from "./UserInfo";
+import UserInfo from "./UserInfo.js";
+import Card from "./CardOOP.js";
+import Section from "./Section.js";
 
 // Cards
 function cardLikeHandler(cardLikeBtn, likeCount, id) {
@@ -50,6 +52,19 @@ function cardLikeHandler(cardLikeBtn, likeCount, id) {
     .catch((error) => {
       console.error(error);
     });
+}
+
+// CARD TEST
+// const cardList = new Section({
+//   data: items,
+//   renderer: (item) => {
+//     const card = createCard(item);
+//     cardList.addItem(card);
+// }})
+
+function createCard(cardData){
+  const card = new Card(cardData, '#card-template')
+  return card.generate();
 }
 
 function cardDeleteHandler(card, id) {
@@ -231,4 +246,19 @@ api.getUser().then((user) => {
   userInfo.setUserInfo(user);
 });
 
-// TODO 1. CardJS 2. FormValidatorJS 3.SectionJS 4. UserInfo
+api.getInitialCards().then((items) => {
+  // console.log(items);
+  const cardList = new Section({
+    items,
+    renderer: (item) => {
+      const card = createCard(item);
+      cardList.addItem(card);
+      // console.log(item)
+  }},
+    '.card-container'
+  )
+  cardList.renderItems();
+});
+
+// TODO 1. Card - добавить интерактивность + добавление новых карточек, 2. FormValidation 
+
