@@ -28,8 +28,10 @@ import { createCard, updateLike, removeCard } from "./card.js";
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation, disableButton } from "./validate.js";
 import { selectors } from "./data.js";
-import * as api from "./api.js";
+// import * as api from "./api.js";
 
+
+import Api from "./ApiOOP.js";
 import PopupWithForm from "./PopupWithForm.js";
 
 // Cards
@@ -84,61 +86,77 @@ function changeAvatar(avatarURL) {
   profileAvatar.src = avatarURL;
 }
 
-function profileFormSubmitHandler(evt) {
-  evt.preventDefault();
-  buttonLoading(profileSubmitBtn);
-  api
-    .updateUserData(nameInput.value, aboutInput.value)
-    .then((userData) => {
-      profileName.textContent = userData.name;
-      profileAbout.textContent = userData.about;
-      closePopup(profilePopup);
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() => {
-      buttonLoading(profileSubmitBtn, "Сохранить");
-    });
+function profileFormSubmitHandler(data) {
+  // evt.preventDefault();
+  // buttonLoading(profileSubmitBtn);
+  // api
+  //   .updateUserData(nameInput.value, aboutInput.value)
+  //   .then((userData) => {
+  //     profileName.textContent = userData.name;
+  //     profileAbout.textContent = userData.about;
+  //     closePopup(profilePopup);
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   })
+  //   .finally(() => {
+  //     buttonLoading(profileSubmitBtn, "Сохранить");
+  //   });
+  // console.log(data)
+  api.updateUserData(data.name, data.about).then((userData) => {
+    profileName.textContent = userData.name;
+    profileAbout.textContent = userData.about;
+    editProfilePopup.close(profilePopup);
+  })
+  
+  
+  // Add button loading and error catch
+  
+  
 }
 
 function newCardFormSubmitHandler(data) {
-  buttonLoading(newCardSubmitBtn);
-  api
-    .postNewCard(data)
-    .then((cardData) => {
-      addCard(
-        createCard(cardData, cardTemplate, cardLikeHandler, cardDeleteHandler),
-        cardsContainer
-      );
-      closePopup(newCardPopup);
-      evt.target.reset();
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() => {
-      buttonLoading(newCardSubmitBtn, "Создать");
-    });
+  // buttonLoading(newCardSubmitBtn);
+  // api
+  //   .postNewCard(data)
+  //   .then((cardData) => {
+  //     addCard(
+  //       createCard(cardData, cardTemplate, cardLikeHandler, cardDeleteHandler),
+  //       cardsContainer
+  //     );
+  //     closePopup(newCardPopup);
+  //     evt.target.reset();
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   })
+  //   .finally(() => {
+  //     buttonLoading(newCardSubmitBtn, "Создать");
+  //   });
+  console.log(data)
 }
 
-function newAvatarFormSubmitHandler(evt) {
-  evt.preventDefault();
-  buttonLoading(avatarSubmitBtn);
-  api
-    .updateUserAvatar(newAvatarURLInput.value)
-    .then((avatarData) => {
+function newAvatarFormSubmitHandler(data) {
+  // buttonLoading(avatarSubmitBtn);
+  console.log(data);
+   api
+    .updateUserAvatar(data.avatarURL).then((avatarData) => {
       changeAvatar(avatarData.avatar);
-      closePopup(newAvatarPopup);
-      evt.target.reset();
+      avatarPopup.close(newAvatarPopup);
     })
+  
+  // api
+  //   .updateUserAvatar(data.avatarURL)
+  //   .then((avatarData) => {
+  //     changeAvatar(avatarData);
+  //   })
 
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() => {
-      buttonLoading(avatarSubmitBtn, "Сохранить");
-    });
+  //   .catch((error) => {
+  //     console.error(error);
+  //   })
+    // .finally(() => {
+    //   buttonLoading(avatarSubmitBtn, "Сохранить");
+    // });
 }
 
 // Adding event listeners
@@ -195,16 +213,39 @@ profileAvatar.addEventListener("click", () => {
 
 // Enabling validation
 enableValidation(selectors);
+const api = new Api({
+   baseUrl: "https://nomoreparties.co/v1/plus-cohort-18",
+    headers: {
+      authorization: "df69811e-988c-4da6-ab8f-d6576e714ab3",
+      "Content-Type": "application/json"
+    },
+})
 
-Promise.all([api.getUser(), api.getInitialCards()])
-  .then(([user, cards]) => {
-    api.setUserId(user._id);
-    profileName.textContent = user.name;
-    profileAbout.textContent = user.about;
-    changeAvatar(user.avatar);
+// Promise.all([api.getUser(), api.getInitialCards()])
+//   .then(([user, cards]) => {
+//     // api.setUserId(user._id);
+//     profileName.textContent = user.name;
+//     profileAbout.textContent = user.about;
+//     changeAvatar(user.avatar);
 
-    renderInitialCards(cards, cardsContainer, cardTemplate);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+//     renderInitialCards(cards, cardsContainer, cardTemplate);
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
+
+
+
+
+
+//TEST
+
+// api.getInitialCards();
+api.getUser().then((user) => {
+  profileName.textContent = user.name;
+  profileAbout.textContent = user.about;
+  changeAvatar(user.avatar);
+});
+
+
+// TODO 1. CardJS 2. FormValidatorJS 3.SectionJS 4. UserInfo
