@@ -30,8 +30,10 @@ import { enableValidation, disableButton } from "./validate.js";
 import { selectors } from "./data.js";
 // import * as api from "./api.js";
 
+// OOP
 import Api from "./ApiOOP.js";
 import PopupWithForm from "./PopupWithForm.js";
+import UserInfo from "./UserInfo";
 
 // Cards
 function cardLikeHandler(cardLikeBtn, likeCount, id) {
@@ -75,40 +77,20 @@ function renderInitialCards(cardsObject, cardsContainer, cardTemplate) {
 }
 
 // Forms
-function setProfileValue() {
-  nameInput.setAttribute("value", profileName.textContent);
-  aboutInput.setAttribute("value", profileAbout.textContent);
-  disableButton(profileSubmitBtn, selectors);
-}
-
-function changeAvatar(avatarURL) {
-  profileAvatar.src = avatarURL;
-}
-
 function profileFormSubmitHandler(data) {
-  // evt.preventDefault();
-  // buttonLoading(profileSubmitBtn);
-  // api
-  //   .updateUserData(nameInput.value, aboutInput.value)
-  //   .then((userData) => {
-  //     profileName.textContent = userData.name;
-  //     profileAbout.textContent = userData.about;
-  //     closePopup(profilePopup);
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   })
-  //   .finally(() => {
-  //     buttonLoading(profileSubmitBtn, "Сохранить");
-  //   });
-  // console.log(data)
-  api.updateUserData(data.name, data.about).then((userData) => {
-    profileName.textContent = userData.name;
-    profileAbout.textContent = userData.about;
-    editProfilePopup.close(profilePopup);
-  });
-
-  // Add button loading and error catch
+  editProfilePopup.renderLoading(true);
+  api
+    .updateUserData(data.name, data.about)
+    .then((userData) => {
+      userInfo.setUserInfo(userData);
+      editProfilePopup.close(profilePopup);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() =>
+      setTimeout(() => editProfilePopup.renderLoading(false), 1000)
+    );
 }
 
 function newCardFormSubmitHandler(data) {
@@ -134,11 +116,17 @@ function newCardFormSubmitHandler(data) {
 
 function newAvatarFormSubmitHandler(data) {
   // buttonLoading(avatarSubmitBtn);
-  console.log(data);
-  api.updateUserAvatar(data.avatarURL).then((avatarData) => {
-    changeAvatar(avatarData.avatar);
-    avatarPopup.close(newAvatarPopup);
-  });
+  avatarPopup.renderLoading(true);
+  api
+    .updateUserAvatar(data.avatarURL)
+    .then((avatarData) => {
+      userInfo.setUserInfo(avatarData);
+      avatarPopup.close(newAvatarPopup);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => setTimeout(() => avatarPopup.renderLoading(false), 1000));
 
   // api
   //   .updateUserAvatar(data.avatarURL)
@@ -175,6 +163,7 @@ const editProfilePopup = new PopupWithForm(
 );
 editProfilePopup.setEventListeners();
 profileEditBtn.addEventListener("click", () => {
+  editProfilePopup.setInputValues(userInfo.getUserInfo());
   editProfilePopup.open();
 });
 
@@ -231,11 +220,15 @@ const api = new Api({
 
 //TEST
 
+const userInfo = new UserInfo({
+  profileNameSelector: ".profile__name",
+  profileAboutSelector: ".profile__about",
+  profileAvatarSelector: ".profile__avatar",
+});
+
 // api.getInitialCards();
 api.getUser().then((user) => {
-  profileName.textContent = user.name;
-  profileAbout.textContent = user.about;
-  changeAvatar(user.avatar);
+  userInfo.setUserInfo(user);
 });
 
 // TODO 1. CardJS 2. FormValidatorJS 3.SectionJS 4. UserInfo
