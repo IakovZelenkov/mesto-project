@@ -54,18 +54,7 @@ function cardLikeHandler(cardLikeBtn, likeCount, id) {
     });
 }
 
-// CARD TEST
-// const cardList = new Section({
-//   data: items,
-//   renderer: (item) => {
-//     const card = createCard(item);
-//     cardList.addItem(card);
-// }})
-
-function createCard(cardData){
-  const card = new Card(cardData, '#card-template')
-  return card.generate();
-}
+// CARD
 
 function cardDeleteHandler(card, id) {
   api
@@ -78,17 +67,19 @@ function cardDeleteHandler(card, id) {
     });
 }
 
-function addCard(cardElement, cardsContainer) {
-  cardsContainer.prepend(cardElement);
-}
+const cardList = new Section(
+  {
+    renderer: (item) => {
+      const card = createCard(item);
+      cardList.addItem(card);
+    },
+  },
+  ".card-container"
+);
 
-function renderInitialCards(cardsObject, cardsContainer, cardTemplate) {
-  cardsObject.reverse().forEach((item) => {
-    addCard(
-      createCard(item, cardTemplate, cardLikeHandler, cardDeleteHandler),
-      cardsContainer
-    );
-  });
+function createCard(cardData) {
+  const card = new Card(cardData, "#card-template");
+  return card.generate();
 }
 
 // Forms
@@ -109,28 +100,22 @@ function profileFormSubmitHandler(data) {
 }
 
 function newCardFormSubmitHandler(data) {
-  // buttonLoading(newCardSubmitBtn);
-  // api
-  //   .postNewCard(data)
-  //   .then((cardData) => {
-  //     addCard(
-  //       createCard(cardData, cardTemplate, cardLikeHandler, cardDeleteHandler),
-  //       cardsContainer
-  //     );
-  //     closePopup(newCardPopup);
-  //     evt.target.reset();
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   })
-  //   .finally(() => {
-  //     buttonLoading(newCardSubmitBtn, "Создать");
-  //   });
-  console.log(data);
+  addCardPopup.renderLoading(true);
+  api
+    .postNewCard(data.placeName, data.placeURL)
+    .then((cardData) => {
+      cardList.addItem(createCard(cardData));
+      addCardPopup.close();
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      setTimeout(() => addCardPopup.renderLoading(false), 1000);
+    });
 }
 
 function newAvatarFormSubmitHandler(data) {
-  // buttonLoading(avatarSubmitBtn);
   avatarPopup.renderLoading(true);
   api
     .updateUserAvatar(data.avatarURL)
@@ -142,27 +127,9 @@ function newAvatarFormSubmitHandler(data) {
       console.error(error);
     })
     .finally(() => setTimeout(() => avatarPopup.renderLoading(false), 1000));
-
-  // api
-  //   .updateUserAvatar(data.avatarURL)
-  //   .then((avatarData) => {
-  //     changeAvatar(avatarData);
-  //   })
-
-  //   .catch((error) => {
-  //     console.error(error);
-  //   })
-  // .finally(() => {
-  //   buttonLoading(avatarSubmitBtn, "Сохранить");
-  // });
 }
 
 // Adding event listeners
-
-// profileAddBtn.addEventListener("click", () => {
-//   openPopup(newCardPopup);
-//   disableButton(profileSubmitBtn, selectors);
-// });
 
 // New Card Popup
 const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
@@ -182,11 +149,6 @@ profileEditBtn.addEventListener("click", () => {
   editProfilePopup.open();
 });
 
-// profileEditBtn.addEventListener("click", () => {
-//   setProfileValue();
-//   openPopup(profilePopup);
-// });
-
 // Popup Avatar change
 const avatarPopup = new PopupWithForm(
   newAvatarPopup,
@@ -197,21 +159,9 @@ profileAvatar.addEventListener("click", () => {
   avatarPopup.open();
 });
 
-// profileAvatar.addEventListener("click", () => {
-//   openPopup(newAvatarPopup);
-// });
-
-// profileFormElement.addEventListener("submit", profileFormSubmitHandler);
-
-// cardFormElement.addEventListener("submit", (evt) => {
-//   newCardFormSubmitHandler(evt);
-//   disableButton(newCardSubmitBtn, selectors);
-// });
-
-// newAvatarFormElement.addEventListener("submit", newAvatarFormSubmitHandler);
-
 // Enabling validation
 enableValidation(selectors);
+
 const api = new Api({
   baseUrl: "https://nomoreparties.co/v1/plus-cohort-18",
   headers: {
@@ -248,17 +198,7 @@ api.getUser().then((user) => {
 
 api.getInitialCards().then((items) => {
   // console.log(items);
-  const cardList = new Section({
-    items,
-    renderer: (item) => {
-      const card = createCard(item);
-      cardList.addItem(card);
-      // console.log(item)
-  }},
-    '.card-container'
-  )
-  cardList.renderItems();
+  cardList.renderItems(items.reverse());
 });
 
-// TODO 1. Card - добавить интерактивность + добавление новых карточек, 2. FormValidation 
-
+// TODO 1. Card - добавить интерактивность  2. FormValidation
