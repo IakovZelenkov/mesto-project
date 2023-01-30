@@ -70,8 +70,7 @@ function cardDeleteHandler(card, id) {
 const cardList = new Section(
   {
     renderer: (item) => {
-      const card = createCard(item);
-      cardList.addItem(card);
+      cardList.addItem(createCard(item));
     },
   },
   ".card-container"
@@ -82,22 +81,13 @@ function createCard(cardData) {
   return card.generate();
 }
 
-// Forms
-function profileFormSubmitHandler(data) {
-  editProfilePopup.renderLoading(true);
-  api
-    .updateUserData(data.name, data.about)
-    .then((userData) => {
-      userInfo.setUserInfo(userData);
-      editProfilePopup.close(profilePopup);
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() =>
-      setTimeout(() => editProfilePopup.renderLoading(false), 1000)
-    );
-}
+// Card Popup
+
+const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
+addCardPopup.setEventListeners();
+profileAddBtn.addEventListener("click", () => {
+  addCardPopup.open();
+});
 
 function newCardFormSubmitHandler(data) {
   addCardPopup.renderLoading(true);
@@ -115,6 +105,38 @@ function newCardFormSubmitHandler(data) {
     });
 }
 
+// Forms
+
+// Profile Edit
+function profileFormSubmitHandler(data) {
+  editProfilePopup.renderLoading(true);
+  api
+    .updateUserData(data.name, data.about)
+    .then((userData) => {
+      userInfo.setUserInfo(userData);
+      editProfilePopup.close(profilePopup);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() =>
+      setTimeout(() => editProfilePopup.renderLoading(false), 1000)
+    );
+}
+
+const editProfilePopup = new PopupWithForm(
+  profilePopup,
+  profileFormSubmitHandler
+);
+
+editProfilePopup.setEventListeners();
+
+profileEditBtn.addEventListener("click", () => {
+  editProfilePopup.setInputValues(userInfo.getUserInfo());
+  editProfilePopup.open();
+});
+
+// Avatar Edit
 function newAvatarFormSubmitHandler(data) {
   avatarPopup.renderLoading(true);
   api
@@ -129,32 +151,13 @@ function newAvatarFormSubmitHandler(data) {
     .finally(() => setTimeout(() => avatarPopup.renderLoading(false), 1000));
 }
 
-// Adding event listeners
-
-// New Card Popup
-const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
-addCardPopup.setEventListeners();
-profileAddBtn.addEventListener("click", () => {
-  addCardPopup.open();
-});
-
-// Profile Edit Popup
-const editProfilePopup = new PopupWithForm(
-  profilePopup,
-  profileFormSubmitHandler
-);
-editProfilePopup.setEventListeners();
-profileEditBtn.addEventListener("click", () => {
-  editProfilePopup.setInputValues(userInfo.getUserInfo());
-  editProfilePopup.open();
-});
-
-// Popup Avatar change
 const avatarPopup = new PopupWithForm(
   newAvatarPopup,
   newAvatarFormSubmitHandler
 );
+
 avatarPopup.setEventListeners();
+
 profileAvatar.addEventListener("click", () => {
   avatarPopup.open();
 });
