@@ -22,24 +22,26 @@ import {
   newAvatarPopup,
   newAvatarFormElement,
   newAvatarURLInput,
+  picturePopup,
 } from "./variables.js";
 import { buttonLoading } from "./utils";
-// import { createCard, updateLike, removeCard } from "./card.js";
 import { openPopup, closePopup } from "./modal.js";
 import { enableValidation, disableButton } from "./validate.js";
 import { selectors } from "./data.js";
-// import * as api from "./api.js";
 
 // OOP
 import Api from "./ApiOOP.js";
 import PopupWithForm from "./PopupWithForm.js";
+import PopupWithImage from "./PopupWithImage";
 import UserInfo from "./UserInfo.js";
 import Card from "./CardOOP.js";
 import Section from "./Section.js";
 
-// Cards
-function cardLikeHandler(cardLikeBtn, likeCount, id) {
-  let method = "";
+
+let userId;
+
+function cardLikeHandler(cardLikeBtn, id){
+    let method = "";
   cardLikeBtn.classList.contains("card__like-button_active")
     ? (method = "DELETE")
     : (method = "PUT");
@@ -47,7 +49,7 @@ function cardLikeHandler(cardLikeBtn, likeCount, id) {
   api
     .toggleLike(id, method)
     .then((data) => {
-      updateLike(cardLikeBtn, likeCount, data.likes.length);
+      this.updateLike(data.likes.length);
     })
     .catch((error) => {
       console.error(error);
@@ -55,16 +57,22 @@ function cardLikeHandler(cardLikeBtn, likeCount, id) {
 }
 
 // CARD
-
-function cardDeleteHandler(card, id) {
+function cardDeleteHandler(id){
   api
     .deleteCard(id)
     .then(() => {
-      removeCard(card);
+      this.delete();
     })
     .catch((error) => {
       console.error(error);
     });
+}
+
+const popupImage = new PopupWithImage(picturePopup);
+
+function cardImagePopupHandler(img, title){
+  popupImage.open(img, title);
+  popupImage.setEventListeners();
 }
 
 const cardList = new Section(
@@ -77,12 +85,13 @@ const cardList = new Section(
 );
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template");
+  const card = new Card(cardData, "#card-template", userId, cardImagePopupHandler, cardLikeHandler, cardDeleteHandler);
+  
   return card.generate();
+  
 }
 
 // Card Popup
-
 const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
 addCardPopup.setEventListeners();
 profileAddBtn.addEventListener("click", () => {
@@ -173,19 +182,6 @@ const api = new Api({
   },
 });
 
-// Promise.all([api.getUser(), api.getInitialCards()])
-//   .then(([user, cards]) => {
-//     api.setUserId(user._id);
-//     profileName.textContent = user.name;
-//     profileAbout.textContent = user.about;
-//     changeAvatar(user.avatar);
-
-//     renderInitialCards(cards, cardsContainer, cardTemplate);
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
-
 //TEST
 
 const userInfo = new UserInfo({
@@ -194,14 +190,12 @@ const userInfo = new UserInfo({
   profileAvatarSelector: ".profile__avatar",
 });
 
-// api.getInitialCards();
-api.getUser().then((user) => {
+Promise.all([api.getUser(), api.getInitialCards()]).then(([user, cards]) => {
   userInfo.setUserInfo(user);
-});
-
-api.getInitialCards().then((items) => {
-  // console.log(items);
-  cardList.renderItems(items.reverse());
-});
+  userId = user._id
+  cardList.renderItems(cards.reverse());
+}).catch((error) => {
+  console.error(error);
+})
 
 // TODO 1. Card - добавить интерактивность  2. FormValidation
