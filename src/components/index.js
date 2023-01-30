@@ -1,31 +1,13 @@
 import "../styles/index.css";
 import {
-  cardsContainer,
-  cardTemplate,
   newCardPopup,
-  cardFormElement,
-  placeNameInput,
-  placeURLInput,
   profilePopup,
-  profileFormElement,
-  profileName,
-  profileAbout,
-  aboutInput,
-  nameInput,
   profileEditBtn,
   profileAddBtn,
-  closeButtons,
-  newCardSubmitBtn,
-  profileSubmitBtn,
-  avatarSubmitBtn,
   profileAvatar,
   newAvatarPopup,
-  newAvatarFormElement,
-  newAvatarURLInput,
   picturePopup,
 } from "./variables.js";
-import { buttonLoading } from "./utils";
-import { openPopup, closePopup } from "./modal.js";
 import { enableValidation, disableButton } from "./validate.js";
 import { selectors } from "./data.js";
 
@@ -37,11 +19,22 @@ import UserInfo from "./UserInfo.js";
 import Card from "./CardOOP.js";
 import Section from "./Section.js";
 
-
 let userId;
 
-function cardLikeHandler(cardLikeBtn, id){
-    let method = "";
+// CARD
+function cardDeleteHandler(id) {
+  api
+    .deleteCard(id)
+    .then(() => {
+      this.delete();
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+function cardLikeHandler(cardLikeBtn, id) {
+  let method = "";
   cardLikeBtn.classList.contains("card__like-button_active")
     ? (method = "DELETE")
     : (method = "PUT");
@@ -56,23 +49,11 @@ function cardLikeHandler(cardLikeBtn, id){
     });
 }
 
-// CARD
-function cardDeleteHandler(id){
-  api
-    .deleteCard(id)
-    .then(() => {
-      this.delete();
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
 const popupImage = new PopupWithImage(picturePopup);
+popupImage.setEventListeners();
 
-function cardImagePopupHandler(img, title){
+function cardImagePopupHandler(img, title) {
   popupImage.open(img, title);
-  popupImage.setEventListeners();
 }
 
 const cardList = new Section(
@@ -85,10 +66,16 @@ const cardList = new Section(
 );
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", userId, cardImagePopupHandler, cardLikeHandler, cardDeleteHandler);
-  
+  const card = new Card(
+    cardData,
+    "#card-template",
+    userId,
+    cardImagePopupHandler,
+    cardLikeHandler,
+    cardDeleteHandler
+  );
+
   return card.generate();
-  
 }
 
 // Card Popup
@@ -190,12 +177,14 @@ const userInfo = new UserInfo({
   profileAvatarSelector: ".profile__avatar",
 });
 
-Promise.all([api.getUser(), api.getInitialCards()]).then(([user, cards]) => {
-  userInfo.setUserInfo(user);
-  userId = user._id
-  cardList.renderItems(cards.reverse());
-}).catch((error) => {
-  console.error(error);
-})
+Promise.all([api.getUser(), api.getInitialCards()])
+  .then(([user, cards]) => {
+    userInfo.setUserInfo(user);
+    userId = user._id;
+    cardList.renderItems(cards.reverse());
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
-// TODO 1. Card - добавить интерактивность  2. FormValidation
+// TODO 1. FormValidation 2. структура файлов
