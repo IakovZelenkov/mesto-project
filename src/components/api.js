@@ -1,68 +1,68 @@
-import config from "./config.json";
-export const localConfig = config;
+export default class Api {
+  constructor(options) {
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
+  }
 
-function checkResponse(res) {
-  return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
-}
+  _handleResponse(res) {
+    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
+  }
 
-export function getUser() {
-  return fetch(`${localConfig.baseUrl}/users/me`, {
-    headers: localConfig.headers,
-  }).then((res) => checkResponse(res));
-}
+  getUser() {
+    return fetch(`${this._baseUrl}/users/me`, { headers: this._headers }).then(
+      this._handleResponse
+    );
+  }
 
-export function setUserId(userId) {
-  localConfig.userId = userId;
-}
+  updateUserAvatar(link) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: link,
+      }),
+    }).then(this._handleResponse);
+  }
 
-export function getInitialCards() {
-  return fetch(`${localConfig.baseUrl}/cards`, {
-    headers: localConfig.headers,
-  }).then((res) => checkResponse(res));
-}
+  getInitialCards() {
+    return fetch(`${this._baseUrl}/cards`, { headers: this._headers }).then(
+      this._handleResponse
+    );
+  }
 
-export function updateUserData(name, about) {
-  return fetch(`${localConfig.baseUrl}/users/me`, {
-    method: "PATCH",
-    headers: localConfig.headers,
-    body: JSON.stringify({
-      name: name,
-      about: about,
-    }),
-  }).then((res) => checkResponse(res));
-}
+  updateUserData(name, about) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        about: about,
+      }),
+    }).then(this._handleResponse);
+  }
 
-export function updateUserAvatar(avatar) {
-  return fetch(`${localConfig.baseUrl}/users/me/avatar`, {
-    method: "PATCH",
-    headers: localConfig.headers,
-    body: JSON.stringify({
-      avatar: avatar,
-    }),
-  }).then((res) => checkResponse(res));
-}
+  postNewCard(name, link) {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        link: link,
+      }),
+    }).then(this._handleResponse);
+  }
 
-export function postNewCard(name, link) {
-  return fetch(`${localConfig.baseUrl}/cards`, {
-    method: "POST",
-    headers: localConfig.headers,
-    body: JSON.stringify({
-      name: name,
-      link: link,
-    }),
-  }).then((res) => checkResponse(res));
-}
+  deleteCard(id) {
+    return fetch(`${this._baseUrl}/cards/${id}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then(this._handleResponse);
+  }
 
-export function deleteCard(id) {
-  return fetch(`${localConfig.baseUrl}/cards/${id}`, {
-    method: "DELETE",
-    headers: localConfig.headers,
-  }).then((res) => checkResponse(res));
-}
-
-export function toggleLike(id, method) {
-  return fetch(`${localConfig.baseUrl}/cards/likes/${id}`, {
-    method: method,
-    headers: localConfig.headers,
-  }).then((res) => checkResponse(res));
+  toggleLike(id, method) {
+    return fetch(`${this._baseUrl}/cards/likes/${id}`, {
+      method: method,
+      headers: this._headers,
+    }).then(this._handleResponse);
+  }
 }

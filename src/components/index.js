@@ -3,21 +3,22 @@ import {
   newCardPopup,
   profilePopup,
   profileEditBtn,
-  profileAddBtn,
+  cardAddBtn,
   profileAvatar,
   newAvatarPopup,
   picturePopup,
+  profileFormElement,
+  newAvatarFormElement,
+  newCardFormElement,
+  selectors,
 } from "./variables.js";
-import { enableValidation, disableButton } from "./validate.js";
-import { selectors } from "./data.js";
-
-// OOP
-import Api from "./ApiOOP.js";
+import Api from "./Api.js";
 import PopupWithForm from "./PopupWithForm.js";
-import PopupWithImage from "./PopupWithImage";
+import PopupWithImage from "./PopupWithImage.js";
 import UserInfo from "./UserInfo.js";
-import Card from "./CardOOP.js";
+import Card from "./Card.js";
 import Section from "./Section.js";
+import FormValidator from "./FormValidator.js";
 
 let userId = "";
 
@@ -31,13 +32,103 @@ const cardList = new Section(
   ".card-container"
 );
 
-const popupImage = new PopupWithImage(picturePopup);
-popupImage.setEventListeners();
+// Profile Edit
+const editProfilePopup = new PopupWithForm(
+  profilePopup,
+  profileFormSubmitHandler
+);
 
-function cardImagePopupHandler(img, title) {
-  popupImage.open(img, title);
+const profileFormValidation = new FormValidator(selectors, profileFormElement);
+
+editProfilePopup.setEventListeners();
+
+profileFormValidation.enableValidation();
+
+profileEditBtn.addEventListener("click", () => {
+  editProfilePopup.setInputValues(userInfo.getUserInfo());
+  editProfilePopup.open();
+
+  profileFormValidation.disableButtonState();
+});
+
+function profileFormSubmitHandler(data) {
+  editProfilePopup.renderLoading(true);
+  api
+    .updateUserData(data.name, data.about)
+    .then((userData) => {
+      userInfo.setUserInfo(userData);
+      editProfilePopup.close(profilePopup);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() =>
+      setTimeout(() => editProfilePopup.renderLoading(false), 1000)
+    );
 }
 
+// Avatar Edit
+const avatarPopup = new PopupWithForm(
+  newAvatarPopup,
+  newAvatarFormSubmitHandler
+);
+
+const avatarFormValidation = new FormValidator(selectors, newAvatarFormElement);
+
+avatarFormValidation.enableValidation();
+
+profileAvatar.addEventListener("click", () => {
+  avatarPopup.open();
+  avatarFormValidation.disableButtonState();
+});
+
+avatarPopup.setEventListeners();
+
+function newAvatarFormSubmitHandler(data) {
+  avatarPopup.renderLoading(true);
+  api
+    .updateUserAvatar(data.avatarURL)
+    .then((avatarData) => {
+      userInfo.setUserInfo(avatarData);
+      avatarPopup.close(newAvatarPopup);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => setTimeout(() => avatarPopup.renderLoading(false), 1000));
+}
+
+// Add new Card
+
+const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
+const newCardFormValidation = new FormValidator(selectors, newCardFormElement);
+
+newCardFormValidation.enableValidation();
+
+addCardPopup.setEventListeners();
+
+cardAddBtn.addEventListener("click", () => {
+  addCardPopup.open();
+
+  newCardFormValidation.disableButtonState();
+});
+
+function newCardFormSubmitHandler(data) {
+  addCardPopup.renderLoading(true);
+  api
+    .postNewCard(data.placeName, data.placeURL)
+    .then((cardData) => {
+      cardList.addItem(createCard(cardData));
+      addCardPopup.close();
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      setTimeout(() => addCardPopup.renderLoading(false), 1000);
+    });
+}
+// Card
 function cardDeleteHandler(id) {
   api
     .deleteCard(id)
@@ -78,90 +169,16 @@ function createCard(cardData) {
   return card.generate();
 }
 
-// Card Popup
-const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
+// Image popup
+const popupImage = new PopupWithImage(picturePopup);
 
-addCardPopup.setEventListeners();
+popupImage.setEventListeners();
 
-profileAddBtn.addEventListener("click", () => {
-  addCardPopup.open();
-});
-
-function newCardFormSubmitHandler(data) {
-  addCardPopup.renderLoading(true);
-  api
-    .postNewCard(data.placeName, data.placeURL)
-    .then((cardData) => {
-      cardList.addItem(createCard(cardData));
-      addCardPopup.close();
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() => {
-      setTimeout(() => addCardPopup.renderLoading(false), 1000);
-    });
-}
-
-// Forms
-
-// Profile Edit
-const editProfilePopup = new PopupWithForm(
-  profilePopup,
-  profileFormSubmitHandler
-);
-
-editProfilePopup.setEventListeners();
-
-profileEditBtn.addEventListener("click", () => {
-  editProfilePopup.setInputValues(userInfo.getUserInfo());
-  editProfilePopup.open();
-});
-
-function profileFormSubmitHandler(data) {
-  editProfilePopup.renderLoading(true);
-  api
-    .updateUserData(data.name, data.about)
-    .then((userData) => {
-      userInfo.setUserInfo(userData);
-      editProfilePopup.close(profilePopup);
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() =>
-      setTimeout(() => editProfilePopup.renderLoading(false), 1000)
-    );
-}
-
-// Avatar Edit
-const avatarPopup = new PopupWithForm(
-  newAvatarPopup,
-  newAvatarFormSubmitHandler
-);
-
-avatarPopup.setEventListeners();
-
-profileAvatar.addEventListener("click", () => {
-  avatarPopup.open();
-});
-
-function newAvatarFormSubmitHandler(data) {
-  avatarPopup.renderLoading(true);
-  api
-    .updateUserAvatar(data.avatarURL)
-    .then((avatarData) => {
-      userInfo.setUserInfo(avatarData);
-      avatarPopup.close(newAvatarPopup);
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() => setTimeout(() => avatarPopup.renderLoading(false), 1000));
+function cardImagePopupHandler(img, title) {
+  popupImage.open(img, title);
 }
 
 // User
-enableValidation(selectors);
 const userInfo = new UserInfo({
   profileNameSelector: ".profile__name",
   profileAboutSelector: ".profile__about",
@@ -187,5 +204,3 @@ Promise.all([api.getUser(), api.getInitialCards()])
   .catch((error) => {
     console.error(error);
   });
-
-// TODO 1. FormValidation 2. структура файлов
