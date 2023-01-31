@@ -19,9 +19,25 @@ import UserInfo from "./UserInfo.js";
 import Card from "./CardOOP.js";
 import Section from "./Section.js";
 
-let userId;
+let userId = "";
 
 // CARD
+const cardList = new Section(
+  {
+    renderer: (item) => {
+      cardList.addItem(createCard(item));
+    },
+  },
+  ".card-container"
+);
+
+const popupImage = new PopupWithImage(picturePopup);
+popupImage.setEventListeners();
+
+function cardImagePopupHandler(img, title) {
+  popupImage.open(img, title);
+}
+
 function cardDeleteHandler(id) {
   api
     .deleteCard(id)
@@ -49,22 +65,6 @@ function cardLikeHandler(cardLikeBtn, id) {
     });
 }
 
-const popupImage = new PopupWithImage(picturePopup);
-popupImage.setEventListeners();
-
-function cardImagePopupHandler(img, title) {
-  popupImage.open(img, title);
-}
-
-const cardList = new Section(
-  {
-    renderer: (item) => {
-      cardList.addItem(createCard(item));
-    },
-  },
-  ".card-container"
-);
-
 function createCard(cardData) {
   const card = new Card(
     cardData,
@@ -80,7 +80,9 @@ function createCard(cardData) {
 
 // Card Popup
 const addCardPopup = new PopupWithForm(newCardPopup, newCardFormSubmitHandler);
+
 addCardPopup.setEventListeners();
+
 profileAddBtn.addEventListener("click", () => {
   addCardPopup.open();
 });
@@ -104,6 +106,18 @@ function newCardFormSubmitHandler(data) {
 // Forms
 
 // Profile Edit
+const editProfilePopup = new PopupWithForm(
+  profilePopup,
+  profileFormSubmitHandler
+);
+
+editProfilePopup.setEventListeners();
+
+profileEditBtn.addEventListener("click", () => {
+  editProfilePopup.setInputValues(userInfo.getUserInfo());
+  editProfilePopup.open();
+});
+
 function profileFormSubmitHandler(data) {
   editProfilePopup.renderLoading(true);
   api
@@ -120,19 +134,18 @@ function profileFormSubmitHandler(data) {
     );
 }
 
-const editProfilePopup = new PopupWithForm(
-  profilePopup,
-  profileFormSubmitHandler
+// Avatar Edit
+const avatarPopup = new PopupWithForm(
+  newAvatarPopup,
+  newAvatarFormSubmitHandler
 );
 
-editProfilePopup.setEventListeners();
+avatarPopup.setEventListeners();
 
-profileEditBtn.addEventListener("click", () => {
-  editProfilePopup.setInputValues(userInfo.getUserInfo());
-  editProfilePopup.open();
+profileAvatar.addEventListener("click", () => {
+  avatarPopup.open();
 });
 
-// Avatar Edit
 function newAvatarFormSubmitHandler(data) {
   avatarPopup.renderLoading(true);
   api
@@ -147,19 +160,15 @@ function newAvatarFormSubmitHandler(data) {
     .finally(() => setTimeout(() => avatarPopup.renderLoading(false), 1000));
 }
 
-const avatarPopup = new PopupWithForm(
-  newAvatarPopup,
-  newAvatarFormSubmitHandler
-);
-
-avatarPopup.setEventListeners();
-
-profileAvatar.addEventListener("click", () => {
-  avatarPopup.open();
+// User
+enableValidation(selectors);
+const userInfo = new UserInfo({
+  profileNameSelector: ".profile__name",
+  profileAboutSelector: ".profile__about",
+  profileAvatarSelector: ".profile__avatar",
 });
 
-// Enabling validation
-enableValidation(selectors);
+//API
 
 const api = new Api({
   baseUrl: "https://nomoreparties.co/v1/plus-cohort-18",
@@ -167,14 +176,6 @@ const api = new Api({
     authorization: "df69811e-988c-4da6-ab8f-d6576e714ab3",
     "Content-Type": "application/json",
   },
-});
-
-//TEST
-
-const userInfo = new UserInfo({
-  profileNameSelector: ".profile__name",
-  profileAboutSelector: ".profile__about",
-  profileAvatarSelector: ".profile__avatar",
 });
 
 Promise.all([api.getUser(), api.getInitialCards()])
