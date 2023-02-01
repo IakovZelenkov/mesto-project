@@ -40,7 +40,7 @@ export const cardAddBtn = profile.querySelector(".profile__add-button");
 export const closeButtons = document.querySelectorAll(".popup__close-button");
 
 //Selectors
-export const selectors = {
+export const config = {
   formSelector: ".form",
   inputSelector: ".form__input",
   submitButtonSelector: ".form__save-button",
