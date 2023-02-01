@@ -44,7 +44,6 @@ profileEditBtn.addEventListener("click", () => {
   editProfilePopup.setInputValues(userInfo.getUserInfo());
   editProfilePopup.open();
 
-  formValidators[profileFormElement.getAttribute("name")].disableButtonState();
   formValidators[profileFormElement.getAttribute("name")].resetValidation();
 });
 
@@ -72,9 +71,6 @@ const avatarPopup = new PopupWithForm(
 
 profileAvatar.addEventListener("click", () => {
   avatarPopup.open();
-  formValidators[
-    newAvatarFormElement.getAttribute("name")
-  ].disableButtonState();
   formValidators[newAvatarFormElement.getAttribute("name")].resetValidation();
 });
 
@@ -102,8 +98,6 @@ addCardPopup.setEventListeners();
 
 cardAddBtn.addEventListener("click", () => {
   addCardPopup.open();
-
-  formValidators[newCardFormElement.getAttribute("name")].disableButtonState();
   formValidators[newCardFormElement.getAttribute("name")].resetValidation();
 });
 
