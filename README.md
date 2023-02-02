@@ -1,8 +1,12 @@
-# Project: mesto
+# Проект для Яндекс.Практикума: Mesto
+
+### Описание
+
+Проект "Mesto" - адаптивный сайт/профиль, в котором люди могут делиться своими фотографиями, созданный по макету Figma. Проект оптимизирован под самые распространенные разрешения экранов.
 
 ---
 
-**Used Technologies:**
+**Используемые технологии**
 
 1. HTML & CSS
 2. JavaScript & DOM
@@ -14,5 +18,10 @@
 8. Form validation using js
 9. Webpack
 10. API
+
+**Ссылка и почта напарника**
+
+- vlad.kazzz@yandex.ru
+- [GitHub](https://github.com/Vlad-Kazzz)
 
 [Github Pages Link](https://iakovzelenkov.github.io/mesto-project/)

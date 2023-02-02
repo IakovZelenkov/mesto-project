@@ -13,7 +13,7 @@ export const picturePopupTitle = picturePopup.querySelector(
   ".popup-picture__title"
 );
 export const newCardPopup = document.querySelector(".popup_card");
-export const cardFormElement = newCardPopup.querySelector(".form");
+export const newCardFormElement = newCardPopup.querySelector(".form");
 export const placeNameInput = newCardPopup.querySelector("#placeName");
 export const placeURLInput = newCardPopup.querySelector("#placeURL");
 export const newCardSubmitBtn =
@@ -36,5 +36,15 @@ export const avatarSubmitBtn =
   newAvatarPopup.querySelector(".form__save-button");
 // Btns
 export const profileEditBtn = profile.querySelector(".profile__edit-button");
-export const profileAddBtn = profile.querySelector(".profile__add-button");
+export const cardAddBtn = profile.querySelector(".profile__add-button");
 export const closeButtons = document.querySelectorAll(".popup__close-button");
+
+//Selectors
+export const config = {
+  formSelector: ".form",
+  inputSelector: ".form__input",
+  submitButtonSelector: ".form__save-button",
+  inactiveButtonClass: "form__save-button_disabled",
+  inputErrorClass: "form__input_type_error",
+  errorClass: "form__error_active",
+};
